@@ -1,29 +1,9 @@
 #!/bin/bash
 
-type=$1
-
-if [ "$type" != "client" ] && [ "$type" != "server" ]; then
-    echo "Usage: $0 [client|server]"
-    exit 1
-fi
-
-if [ "$GITHUB_REF" != "" ]; then
-    commit=$(echo "$GITHUB_SHA" | head -c 7);
-    branch=${GITHUB_REF#refs/heads/};
-    if [ "$branch" = "master" ]; then
-        version="$commit"
-    else
-        version="$commit ($branch)"
-    fi
-elif [ $(which git) != "" ]; then
+if [ "$(which git)" != "" ]; then
     commit=$(git rev-parse HEAD | head -c 7);
     branch=$(git rev-parse --abbrev-ref HEAD);
-    if [ "$branch" = "master" ]; then
-        version="$commit"
-    else
-        version="$commit ($branch)"
-    fi
-    version="$version - UNOFFICIAL BUILD"
+    version="$commit ($branch) - UNOFFICIAL BUILD"
 else
    version="UNOFFICIAL BUILD"
 fi
